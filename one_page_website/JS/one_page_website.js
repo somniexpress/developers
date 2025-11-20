@@ -1,251 +1,240 @@
-<!DOCTYPE html>
-<html>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {
-  font-family: Verdana, sans-serif;
-  margin: 0;
-}
+// one_page_website.js
 
-* {
-  box-sizing: border-box;
-}
-
-.row > .column {
-  padding: 0 8px;
-}
-
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-.column {
-  float: left;
-  width: 25%;
-}
-
-/* The Modal (background) */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  padding-top: 100px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: black;
-}
-
-/* Modal Content */
-.modal-content {
-  position: relative;
-  background-color: #fefefe;
-  margin: auto;
-  padding: 0;
-  width: 90%;
-  max-width: 1200px;
-}
-
-/* The Close Button */
-.close {
-  color: white;
-  position: absolute;
-  top: 10px;
-  right: 25px;
-  font-size: 35px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #999;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.mySlides {
-  display: none;
-}
-
-.cursor {
-  cursor: pointer;
-}
-
-/* Next & previous buttons */
-.prev,
-.next {
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  width: auto;
-  padding: 16px;
-  margin-top: -50px;
-  color: white;
-  font-weight: bold;
-  font-size: 20px;
-  transition: 0.6s ease;
-  border-radius: 0 3px 3px 0;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-/* Position the "next button" to the right */
-.next {
-  right: 0;
-  border-radius: 3px 0 0 3px;
-}
-
-/* On hover, add a black background color with a little bit see-through */
-.prev:hover,
-.next:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
-/* Number text (1/3 etc) */
-.numbertext {
-  color: #f2f2f2;
-  font-size: 12px;
-  padding: 8px 12px;
-  position: absolute;
-  top: 0;
-}
-
-img {
-  margin-bottom: -4px;
-}
-
-.caption-container {
-  text-align: center;
-  background-color: black;
-  padding: 2px 16px;
-  color: white;
-}
-
-.demo {
-  opacity: 0.6;
-}
-
-.active,
-.demo:hover {
-  opacity: 1;
-}
-
-img.hover-shadow {
-  transition: 0.3s;
-}
-
-.hover-shadow:hover {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-</style>
-<body>
-
-<h2 style="text-align:center">Lightbox</h2>
-
-<div class="row">
-  <div class="column">
-    <img src="img_nature.jpg" style="width:100%" onclick="openModal();currentSlide(1)" class="hover-shadow cursor">
-  </div>
-  <div class="column">
-    <img src="img_snow.jpg" style="width:100%" onclick="openModal();currentSlide(2)" class="hover-shadow cursor">
-  </div>
-  <div class="column">
-    <img src="img_mountains.jpg" style="width:100%" onclick="openModal();currentSlide(3)" class="hover-shadow cursor">
-  </div>
-  <div class="column">
-    <img src="img_lights.jpg" style="width:100%" onclick="openModal();currentSlide(4)" class="hover-shadow cursor">
-  </div>
-</div>
-
-<div id="myModal" class="modal">
-  <span class="close cursor" onclick="closeModal()">&times;</span>
-  <div class="modal-content">
-
-    <div class="mySlides">
-      <div class="numbertext">1 / 4</div>
-      <img src="img_nature_wide.jpg" style="width:100%">
-    </div>
-
-    <div class="mySlides">
-      <div class="numbertext">2 / 4</div>
-      <img src="img_snow_wide.jpg" style="width:100%">
-    </div>
-
-    <div class="mySlides">
-      <div class="numbertext">3 / 4</div>
-      <img src="img_mountains_wide.jpg" style="width:100%">
-    </div>
+document.addEventListener('DOMContentLoaded', function() {
+    // Create lightbox elements
+    const lightbox = document.createElement('div');
+    lightbox.id = 'lightbox';
+    lightbox.innerHTML = `
+        <div class="lightbox-content">
+            <span class="close">&times;</span>
+            <img class="lightbox-img" src="" alt="">
+            <div class="lightbox-caption"></div>
+            <div class="lightbox-nav">
+                <button class="prev-btn"><i class="fas fa-chevron-left"></i></button>
+                <button class="next-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    `;
     
-    <div class="mySlides">
-      <div class="numbertext">4 / 4</div>
-      <img src="img_lights_wide.jpg" style="width:100%">
-    </div>
+    // Add lightbox to the page
+    document.body.appendChild(lightbox);
     
-    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-    <a class="next" onclick="plusSlides(1)">&#10095;</a>
-
-    <div class="caption-container">
-      <p id="caption"></p>
-    </div>
-
-
-    <div class="column">
-      <img class="demo cursor" src="img_nature_wide.jpg" style="width:100%" onclick="currentSlide(1)" alt="Nature and sunrise">
-    </div>
-    <div class="column">
-      <img class="demo cursor" src="img_snow_wide.jpg" style="width:100%" onclick="currentSlide(2)" alt="Snow">
-    </div>
-    <div class="column">
-      <img class="demo cursor" src="img_mountains_wide.jpg" style="width:100%" onclick="currentSlide(3)" alt="Mountains and fjords">
-    </div>
-    <div class="column">
-      <img class="demo cursor" src="img_lights_wide.jpg" style="width:100%" onclick="currentSlide(4)" alt="Northern Lights">
-    </div>
-  </div>
-</div>
-
-<script>
-function openModal() {
-  document.getElementById("myModal").style.display = "block";
-}
-
-function closeModal() {
-  document.getElementById("myModal").style.display = "none";
-}
-
-var slideIndex = 1;
-showSlides(slideIndex);
-
-function plusSlides(n) {
-  showSlides(slideIndex += n);
-}
-
-function currentSlide(n) {
-  showSlides(slideIndex = n);
-}
-
-function showSlides(n) {
-  var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var dots = document.getElementsByClassName("demo");
-  var captionText = document.getElementById("caption");
-  if (n > slides.length) {slideIndex = 1}
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
-  }
-  for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex-1].style.display = "block";
-  dots[slideIndex-1].className += " active";
-  captionText.innerHTML = dots[slideIndex-1].alt;
-}
-</script>
+    // Add lightbox styles
+    const lightboxStyles = `
+        #lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        #lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        .close {
+            position: absolute;
+            top: -40px;
+            right: -10px;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close:hover {
+            color: #3498db;
+        }
+        
+        .lightbox-caption {
+            color: white;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 18px;
+            max-width: 80%;
+        }
+        
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+        
+        .prev-btn, .next-btn {
+            background: rgba(52, 152, 219, 0.7);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .prev-btn:hover, .next-btn:hover {
+            background: rgba(52, 152, 219, 1);
+            transform: scale(1.1);
+        }
+        
+        .prev-btn {
+            margin-left: 20px;
+        }
+        
+        .next-btn {
+            margin-right: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .prev-btn, .next-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            
+            .lightbox-caption {
+                font-size: 16px;
+            }
+        }
+    `;
     
-</body>
-</html>
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = lightboxStyles;
+    document.head.appendChild(styleSheet);
+    
+    // Get all gallery images
+    const galleryImages = document.querySelectorAll('.gallery-item img');
+    let currentImageIndex = 0;
+    
+    // Add click event to each gallery image
+    galleryImages.forEach((img, index) => {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', function() {
+            openLightbox(index);
+        });
+    });
+    
+    // Lightbox functions
+    function openLightbox(index) {
+        currentImageIndex = index;
+        updateLightboxImage();
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }
+    
+    function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = ''; // Re-enable scrolling
+    }
+    
+    function updateLightboxImage() {
+        const lightboxImg = document.querySelector('.lightbox-img');
+        const lightboxCaption = document.querySelector('.lightbox-caption');
+        const currentImg = galleryImages[currentImageIndex];
+        
+        lightboxImg.src = currentImg.src;
+        lightboxImg.alt = currentImg.alt;
+        
+        // Get caption from the gallery item
+        const captionElement = currentImg.closest('.gallery-item').querySelector('.gallery-caption h3');
+        lightboxCaption.textContent = captionElement ? captionElement.textContent : '';
+    }
+    
+    function showNextImage() {
+        currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+        updateLightboxImage();
+    }
+    
+    function showPrevImage() {
+        currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+        updateLightboxImage();
+    }
+    
+    // Event listeners for lightbox controls
+    document.querySelector('.close').addEventListener('click', closeLightbox);
+    document.querySelector('.next-btn').addEventListener('click', showNextImage);
+    document.querySelector('.prev-btn').addEventListener('click', showPrevImage);
+    
+    // Close lightbox when clicking on the background
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (!lightbox.classList.contains('active')) return;
+        
+        switch(e.key) {
+            case 'Escape':
+                closeLightbox();
+                break;
+            case 'ArrowRight':
+                showNextImage();
+                break;
+            case 'ArrowLeft':
+                showPrevImage();
+                break;
+        }
+    });
+    
+    // Add form submission handler
+    const contactForm = document.querySelector('#contact form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            // Simple validation
+            if (!name || !email || !message) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // In a real application, you would send this data to a server
+            // For this example, we'll just show a success message
+            alert(`Thank you, ${name}! Your message has been sent. We'll get back to you at ${email} soon.`);
+            
+            // Reset the form
+            contactForm.reset();
+        });
+    }
+});
